@@ -1,2 +1,3 @@
-Adds "Luckysine". Upon gulp, causes random events.
-Don't try it in a sub.
+Adds "Luckysine".<br/> 
+Upon gulp, causes random events.<br/> 
+Don't try it on a sub.
