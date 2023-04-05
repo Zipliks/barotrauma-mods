@@ -80,5 +80,17 @@ function CollectAllTanks(character)
 		end
 	end
 
+	-- Add opened container such as locker
+	local openedContainer = character.SelectedItem
+	if openedContainer ~= nil then
+		for item in openedContainer.OwnInventory.AllItems do
+			if item.HasTag("oxygensource") then
+				table.insert(variants, iter, item)
+				iter = iter + 1
+			end
+		end
+	end
+
+
 	return variants
 end
