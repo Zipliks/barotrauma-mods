@@ -4,7 +4,7 @@ function FindBiggestCondition(items)
 
     for i = 2, #items do
         local current_ratio = items[i].Condition / items[i].MaxCondition
-        if (current_ratio > max_ratio) and (current_ratio ~= 0) and (items[i].Condition >= Config.min_suitable_condition) then
+        if (current_ratio > max_ratio) and (current_ratio ~= 0) and (items[i].Condition >= Config.MIN_SUITABLE_CONDITION) then
             max_ratio = current_ratio
             max_item = items[i]
         end
@@ -13,9 +13,9 @@ function FindBiggestCondition(items)
     return max_item
 end
 
-function FindMaxQuality(items)
+function FindMaxQuality(tbl)
     local max_quality = 0
-    for _, item in ipairs(items) do
+    for _, item in ipairs(tbl) do
         if (item.Quality > max_quality) and (item.Condition / item.MaxCondition ~= 0) then
             max_quality = item.Quality
         end
