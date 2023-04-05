@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <contentpackage name="Oxygen Reloader" modversion="1.0.0" corepackage="False" gameversion="0.19.0.0">
     <!-- Lua -->
-    <Other file="%ModDir%/Lua/ForcedAutorun/main.lua" />
-    <Other file="%ModDir%/Lua/ForcedAutorun/utils.lua" />
+	<Other file="%ModDir%/Lua/Autorun/main.lua" />
+	<Other file="%ModDir%/Lua/Autorun/utils.lua" />
+	<Other file="%ModDir%/Lua/config.lua" />
 </contentpackage>
