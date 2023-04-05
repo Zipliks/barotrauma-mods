@@ -42,11 +42,25 @@ function CollectAllTanks(character)
 	-- Find all variants
 	local iter = 1
 
-	-- Collect all tanks from player's hotbar
+	-- Collect all tanks from player's inventory
 	for item in character.Inventory.AllItems do
 		if item.HasTag("oxygensource") then
 			table.insert(variants, iter, item)
 			iter = iter + 1
+		end
+		if item.HasTag("mobilecontainer") then
+			local container = item
+			for item in container.OwnInventory.AllItems do
+				table.insert(variants, iter, item)
+				iter = iter + 1
+			end
+		end
+		if item.HasTag("crate") then
+			local crate = item
+			for item in crate.OwnInventory.AllItems do
+				table.insert(variants, iter, item)
+				iter = iter + 1
+			end
 		end
 	end
 
@@ -57,17 +71,6 @@ function CollectAllTanks(character)
 		if maskTank ~= nil then
 			table.insert(variants, iter, maskTank)
 			iter = iter + 1
-		end
-	end
-
-	-- Add bag slot
-	local bag_slot = character.Inventory.GetItemInLimbSlot(InvSlotType.Bag)
-	if bag_slot ~= nil and bag_slot.HasTag("mobilecontainer") then
-		for item in bag_slot.OwnInventory.AllItems do
-			if item.HasTag("oxygensource") then
-				table.insert(variants, iter, item)
-				iter = iter + 1
-			end
 		end
 	end
 
