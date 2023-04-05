@@ -1,6 +1,5 @@
 Config = {}
-Config.version = "0.9.0"
+Config.version = "1.0.1"
 Config.button = Keys.Q -- https://docs.monogame.net/api/Microsoft.Xna.Framework.Input.Keys.html
-Config.min_codition = 0.9 -- 90% of MaxCondition
-
-return Config
+Config.min_swap_condition = 50 -- Minimal item condition to be swapped
+Config.min_suitable_condition = 90 -- Minimal item condition to be treated as variant
