@@ -4,7 +4,7 @@ function FindBiggestCondition(items)
 
     for i = 2, #items do
         local current_ratio = items[i].Condition / items[i].MaxCondition
-        if (current_ratio > max_ratio) and (current_ratio ~= 0) then
+        if (current_ratio > max_ratio) and (current_ratio ~= 0) and (current_ratio >= Config.min_codition) then
             max_ratio = current_ratio
             max_item = items[i]
         end
