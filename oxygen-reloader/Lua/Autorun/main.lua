@@ -1,26 +1,31 @@
 if SERVER then return end
-
-local config = require("config")
+local Config = require("config")
 
 print(
     "--------\n" ..
-    "Running Oxygen Reloader version: " .. config.version ..
-    "\nCurrent reload button is: " .. tostring(config.button) ..
+    "Running Oxygen Reloader version: " .. Config.version ..
+    "\nCurrent reload button is: " .. tostring(Config.button) ..
     "\n--------"
 )
 
-
 Hook.Add("keyUpdate", "AutoReplaceOxygenTank", function(keyargs)
-    if not PlayerInput.KeyDown(config.button) then return end
+    
+    if not PlayerInput.KeyDown(Config.button) then
+        return
+    end
+    
+    if Character.DisableControls then
+        return
+    end
     if Character.Controlled == nil or Character.Controlled.Inventory == nil then
         return
     end
-
+    
     local character = Character.Controlled
     local suit_slot = character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes)
     local head_slot = character.Inventory.GetItemInLimbSlot(InvSlotType.Head)
 
-    if suit_slot ~= nil and suit_slot.HasTag("divingsuit") then
+    if suit_slot ~= nil and suit_slot.HasTag("diving") then
         ReplaceSuitTank(character, suit_slot)
     elseif head_slot ~= nil and head_slot.HasTag("diving") then
         ReplaceMaskTank(character, head_slot)
@@ -49,7 +54,6 @@ function ReplaceAny(character, diving_gear)
     end
 
     local best_tank = FindBiggestCondition(variants)
-    -- print("Best tank is: ", best_tank)
     diving_gear.OwnInventory.TryPutItem(best_tank, 0, true, false, character)
 end
 
@@ -72,7 +76,6 @@ function ReplaceSuitTank(character, suit_slot)
 
 
     local best_tank = FindBiggestCondition(variants)
-    -- print("Best tank is: ", best_tank)
     if best_tank == suit_tank then
         return
     end
@@ -97,7 +100,6 @@ function ReplaceMaskTank(character, head_slot)
 
 
     local best_tank = FindBiggestCondition(variants)
-    -- print("Best tank is: ", best_tank)
     if best_tank == mask_tank then
         return
     end
