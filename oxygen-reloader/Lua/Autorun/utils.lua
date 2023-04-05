@@ -37,9 +37,24 @@ function RemoveLowQuality(variants, max_quality)
     return variants
 end
 
+-- Searches for oxygen source recursively. If item has its own inventory - it will be searched.
+function FindRecursively(container, iter, tbl)
+    if container.OwnInventory == nil then
+        return
+    end
+    for item in container.OwnInventory.AllItems do
+        if item.OwnInventory ~= nil then
+            FindRecursively(item, iter, tbl)
+        end
+        if item.HasTag("oxygensource") then
+            table.insert(tbl, iter, item)
+            iter = iter + 1
+        end
+    end
+end
+
 function CollectAllTanks(character)
     local variants = {}
-    -- Find all variants
     local iter = 1
 
     -- Collect all tanks from player's inventory
@@ -48,47 +63,16 @@ function CollectAllTanks(character)
             table.insert(variants, iter, item)
             iter = iter + 1
         end
-        if item.HasTag("mobilecontainer") or item.HasTag("crate") then
-            local container = item
-            for inner_item in container.OwnInventory.AllItems do
-                if inner_item.HasTag("oxygensource") then
-                    table.insert(variants, iter, inner_item)
-                    iter = iter + 1
-                end
-            end
-        end
-    end
-
-    -- Add mask tank to table if there is one
-    local head_slot = character.Inventory.GetItemInLimbSlot(InvSlotType.Head)
-    if head_slot ~= nil and head_slot.HasTag("diving") then
-        local maskTank = head_slot.OwnInventory.FindItemByTag("oxygensource", true)
-        if maskTank ~= nil then
-            table.insert(variants, iter, maskTank)
-            iter = iter + 1
-        end
-    end
-
-    -- Also add suit tank to the table
-    local suit_slot = character.Inventory.GetItemInLimbSlot(InvSlotType.OuterClothes)
-    if suit_slot ~= nil and suit_slot.HasTag("divingsuit") then
-        local suit_tank = suit_slot.OwnInventory.FindItemByTag("oxygensource", true)
-        if suit_tank ~= nil then
-            table.insert(variants, iter, suit_tank)
+        if item.OwnInventory ~= nil then
+            FindRecursively(item, iter, variants)
         end
     end
 
     -- Add opened container such as locker
     local openedContainer = character.SelectedItem
     if openedContainer ~= nil then
-        for item in openedContainer.OwnInventory.AllItems do
-            if item.HasTag("oxygensource") then
-                table.insert(variants, iter, item)
-                iter = iter + 1
-            end
-        end
+        FindRecursively(openedContainer, iter, variants)
     end
-
 
     return variants
 end
