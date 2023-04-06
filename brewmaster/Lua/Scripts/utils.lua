@@ -49,7 +49,7 @@ function Utils.RespawnAsCharacter(character, identifier)
 
 	Entity.Spawner.AddCharacterToSpawnQueue(identifier, character.WorldPosition, function(newCharacter)
 		local client = nil
-		for key, value in pairs(Client.ClientList) do
+		for _, value in pairs(Client.ClientList) do
 			if value.Character == character then
 				client = value
 			end
@@ -62,18 +62,6 @@ function Utils.RespawnAsCharacter(character, identifier)
 		end
 
 		newCharacter.TeamID = character.TeamID
-
 		client.SetClientCharacter(newCharacter)
-
-		local info = CharacterInfo(identifier, client.Name, client.Name)
-		info.Job = Job(JobPrefab.Get(character.JobIdentifier))
-		info.Head = client.CharacterInfo.Head
-		info.Head.HairIndex = 0
-		info.Head.BeardIndex = 0
-		info.Head.MoustacheIndex = 0
-		info.Head.FaceAttachmentIndex = 0
-
-		newCharacter.Info = info
 	end)
 end
-	
